@@ -1,11 +1,14 @@
 module Fractals
     ( julia
-    , mandlebrot
+    , mandlebrot,
+      Coordinate
     )
 where
 
 import           Data.Complex
-import           Graphics.GD 
+import           Graphics.GD
+
+type Coordinate = (Double, Double)
 
 iterateSet
     :: Int
@@ -27,8 +30,8 @@ julia c z = iterateSet 64 c z 0
 mandlebrot :: Complex Double -> Complex Double -> Int
 mandlebrot c z = iterateSet 127 c z 0
 
-drawMandlebrot :: Point -> Color
-drawMandlebrot (x, y) = pointColour 127 $ mandlebrot (fromIntegral x :+ fromIntegral y) (0 :+ 0)
+drawMandlebrot :: Coordinate -> Color
+drawMandlebrot (x, y) = pointColour 127 $ mandlebrot (x :+ y) (0 :+ 0)
 
 pointColour ::Int -> Int -> Color
 pointColour _ 0 = rgb 255 255 255
