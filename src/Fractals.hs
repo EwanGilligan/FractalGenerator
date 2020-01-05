@@ -1,7 +1,10 @@
 module Fractals
     ( julia
-    , mandlebrot,
-      Coordinate
+    , mandlebrot
+    , drawMandlebrot
+    , Coordinate
+    , drawJuliaAtPoint 
+    , drawJuliaDefault
     )
 where
 
@@ -33,9 +36,17 @@ mandlebrot c z = iterateSet 127 c z 0
 drawMandlebrot :: Coordinate -> Color
 drawMandlebrot (x, y) = pointColour 127 $ mandlebrot (x :+ y) (0 :+ 0)
 
-pointColour ::Int -> Int -> Color
+drawJuliaAtPoint :: Complex Double -> Coordinate -> Color
+drawJuliaAtPoint c (x, y) = pointColour 64 $ julia c (x :+ y)
+
+drawJuliaDefault :: Coordinate -> Color
+drawJuliaDefault (x, y) = drawJuliaAtPoint ((-0.423) :+ 0.745) (x, y)
+
+pointColour :: Int -> Int -> Color
 pointColour _ 0 = rgb 255 255 255
-pointColour maxIter x = let colour = iterToColour maxIter x in rgb colour colour colour   
+pointColour maxIter x =
+    let colour = iterToColour maxIter x in rgb colour colour colour
 
 iterToColour :: Int -> Int -> Int
-iterToColour maxIter iter = floor (255.0 - 255.0 * fromIntegral iter / fromIntegral maxIter)
+iterToColour maxIter iter =
+    floor (255.0 - 255.0 * fromIntegral iter / fromIntegral maxIter)
